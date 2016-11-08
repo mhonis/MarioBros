@@ -4,6 +4,11 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mhonis.mariobros.screens.PlayScreen;
 
+/**
+ * known issues:
+ *  friction decreases Mario's vertical velocity
+ */
+
 public class MarioBros extends Game {
 
     public static final int V_WIDTH = 400;
