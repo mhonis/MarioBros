@@ -80,19 +80,17 @@ public class Mario extends Sprite {
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
-        //Problem with sphere is it bumps when traversing border between two tiles, EdgeShape seems to be the way to go
-        //further info: Ghost Vertices http://www.iforce2d.net/b2dtut/ghost-vertices
-
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(6 / MarioBros.PPM);
         fdef.shape = shape;
-//        FixtureDef fdef = new FixtureDef();
-//        EdgeShape feet = new EdgeShape();
-//        feet.set(new Vector2(-2 / MarioBros.PPM, -8 / MarioBros.PPM), new Vector2(2 / MarioBros.PPM, -8 / MarioBros.PPM));
-//        fdef.shape = feet;
-//        fdef.isSensor = false;
         b2body.createFixture(fdef);
+
+        FixtureDef fdef2 = new FixtureDef();
+        EdgeShape feet = new EdgeShape();
+        feet.set(new Vector2(-2 / MarioBros.PPM, -6 / MarioBros.PPM), new Vector2(2 / MarioBros.PPM, -6 / MarioBros.PPM));
+        fdef2.shape = feet;
+        b2body.createFixture(fdef2);
     }
 
     public TextureRegion getFrame(float dt) {
