@@ -18,6 +18,7 @@ import com.mhonis.mariobros.MarioBros;
 import com.mhonis.mariobros.scenes.Hud;
 import com.mhonis.mariobros.sprites.Mario;
 import com.mhonis.mariobros.tools.B2WorldCreator;
+import com.mhonis.mariobros.tools.WorldContactListener;
 
 /**
  * Created by mhonis on 4.11.2016.
@@ -30,7 +31,7 @@ public class PlayScreen implements Screen {
     private Hud hud;
     private Viewport gamePort;
 
-    private int mapWidth;
+    private float camBoundRight;
 
     //Tiled map variables
     TmxMapLoader mapLoader;
@@ -63,7 +64,9 @@ public class PlayScreen implements Screen {
         new B2WorldCreator(world, map);
 
         player = new Mario(world, this);
-        mapWidth = map.getProperties().get("width", Integer.class);
+        camBoundRight = (16 * map.getProperties().get("width", Integer.class) / MarioBros.PPM);
+
+        world.setContactListener(new WorldContactListener());
     }
 
     public TextureAtlas getTextureAtlas() {
@@ -99,7 +102,7 @@ public class PlayScreen implements Screen {
         player.update(dt);
 
         //track Mario with camera (only within the range of the map)
-        if ((player.b2body.getPosition().x > gameCam.viewportWidth / 2) && (player.b2body.getPosition().x < (16 * mapWidth / MarioBros.PPM - gameCam.viewportWidth / 2)))
+        if ((player.b2body.getPosition().x > gameCam.viewportWidth / 2) && (player.b2body.getPosition().x < (camBoundRight - (gameCam.viewportWidth / 2))))
             gameCam.position.x = player.b2body.getPosition().x;
 
         //update the camera and view

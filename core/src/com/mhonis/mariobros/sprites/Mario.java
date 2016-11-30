@@ -84,13 +84,18 @@ public class Mario extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(6 / MarioBros.PPM);
         fdef.shape = shape;
-        b2body.createFixture(fdef);
+        b2body.createFixture(fdef).setUserData("body");
 
-        FixtureDef fdef2 = new FixtureDef();
         EdgeShape feet = new EdgeShape();
         feet.set(new Vector2(-2 / MarioBros.PPM, -6 / MarioBros.PPM), new Vector2(2 / MarioBros.PPM, -6 / MarioBros.PPM));
-        fdef2.shape = feet;
-        b2body.createFixture(fdef2);
+        fdef.shape = feet;
+        b2body.createFixture(fdef).setUserData("feet");
+
+        EdgeShape head = new EdgeShape();
+        head.set(new Vector2(-2 / MarioBros.PPM, 6 / MarioBros.PPM), new Vector2(2 / MarioBros.PPM, 6 / MarioBros.PPM));
+        fdef.shape = head;
+        fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData("head");
     }
 
     public TextureRegion getFrame(float dt) {
