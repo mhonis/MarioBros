@@ -6,18 +6,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -36,6 +29,8 @@ public class PlayScreen implements Screen {
     private OrthographicCamera gameCam;
     private Hud hud;
     private Viewport gamePort;
+
+    private int mapWidth;
 
     //Tiled map variables
     TmxMapLoader mapLoader;
@@ -68,6 +63,7 @@ public class PlayScreen implements Screen {
         new B2WorldCreator(world, map);
 
         player = new Mario(world, this);
+        mapWidth = map.getProperties().get("width", Integer.class);
     }
 
     public TextureAtlas getTextureAtlas() {
@@ -102,8 +98,9 @@ public class PlayScreen implements Screen {
 
         player.update(dt);
 
-        //track Mario with camera
-        gameCam.position.x = player.b2body.getPosition().x;
+        //track Mario with camera (only within the range of the map)
+        if ((player.b2body.getPosition().x > gameCam.viewportWidth / 2) && (player.b2body.getPosition().x < (16 * mapWidth / MarioBros.PPM - gameCam.viewportWidth / 2)))
+            gameCam.position.x = player.b2body.getPosition().x;
 
         //update the camera and view
         gameCam.update();
