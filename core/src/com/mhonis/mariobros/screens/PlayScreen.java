@@ -100,6 +100,7 @@ public class PlayScreen implements Screen {
         world.step(1 / 60F, 6, 2);
 
         player.update(dt);
+        hud.update(dt);
 
         //track Mario with camera (only within the range of the map)
         if ((player.b2body.getPosition().x > gameCam.viewportWidth / 2) && (player.b2body.getPosition().x < (camBoundRight - (gameCam.viewportWidth / 2))))

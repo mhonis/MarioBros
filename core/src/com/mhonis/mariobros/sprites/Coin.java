@@ -1,9 +1,11 @@
 package com.mhonis.mariobros.sprites;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mhonis.mariobros.MarioBros;
+import com.mhonis.mariobros.scenes.Hud;
 
 /**
  * Created by mhonis on 4.11.2016.
@@ -11,8 +13,12 @@ import com.mhonis.mariobros.MarioBros;
 
 public class Coin extends InteractiveTileObject {
 
+    private static TiledMapTileSet tileSet;
+    private final int BLANK_COIN = 28;
+
     public Coin(World world, TiledMap map, Rectangle bounds) {
         super(world, map, bounds);
+        tileSet = map.getTileSets().getTileSet("tileset_gutter");
         fixture.setUserData(this);
         setCathegoryFilter(MarioBros.COIN_BIT);
     }
@@ -20,5 +26,8 @@ public class Coin extends InteractiveTileObject {
     @Override
     public void onHeadHit() {
         System.out.println("head hit a coin");
+        if (getCell().getTile().getId() != BLANK_COIN)
+            Hud.addScore(100);
+        getCell().setTile(tileSet.getTile(BLANK_COIN));
     }
 }

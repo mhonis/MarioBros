@@ -1,6 +1,5 @@
 package com.mhonis.mariobros.scenes;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -26,10 +25,10 @@ public class Hud implements Disposable {
 
     private Integer worldTimer;
     private float timeCount;
-    private Integer score;
+    static private Integer score;
 
     Label countDownLabel;
-    Label scoreLabel;
+    static Label scoreLabel;
     Label timeLabel;
     Label levelLabel;
     Label worldLabel;
@@ -62,6 +61,20 @@ public class Hud implements Disposable {
         table.add(countDownLabel).expandX();
 
         stage.addActor(table);
+    }
+
+    public void update(float dt) {
+        timeCount += dt;
+        if(timeCount >= 1) {
+            worldTimer--;
+            countDownLabel.setText(String.format("%03d", worldTimer));
+            timeCount = 0;
+        }
+    }
+
+    public static void addScore(int value) {
+        score += value;
+        scoreLabel.setText(String.format("%06d", score));
     }
 
     @Override
