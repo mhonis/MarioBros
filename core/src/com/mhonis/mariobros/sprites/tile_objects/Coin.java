@@ -1,10 +1,8 @@
-package com.mhonis.mariobros.sprites;
+package com.mhonis.mariobros.sprites.tile_objects;
 
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.World;
 import com.mhonis.mariobros.MarioBros;
 import com.mhonis.mariobros.scenes.Hud;
 import com.mhonis.mariobros.screens.PlayScreen;

@@ -1,4 +1,4 @@
-package com.mhonis.mariobros.sprites;
+package com.mhonis.mariobros.sprites.tile_objects;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
