@@ -3,6 +3,7 @@ package com.mhonis.mariobros.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -45,6 +46,8 @@ public class PlayScreen implements Screen {
     Mario player;
     private TextureAtlas textureAtlas;
 
+    private Music music;
+
 
     public PlayScreen(MarioBros game) {
         textureAtlas = new TextureAtlas("MarioAndEnemies.pack");
@@ -67,6 +70,11 @@ public class PlayScreen implements Screen {
         camBoundRight = (16 * map.getProperties().get("width", Integer.class) / MarioBros.PPM);
 
         world.setContactListener(new WorldContactListener());
+
+        music = MarioBros.manager.get("audio/music/mario_music.ogg");
+        music.setLooping(true);
+        music.setVolume(0.1f);
+        music.play();
     }
 
     public TextureAtlas getTextureAtlas() {
@@ -163,5 +171,6 @@ public class PlayScreen implements Screen {
         world.dispose();
         b2dr.dispose();
         hud.dispose();
+        music.dispose();
     }
 }

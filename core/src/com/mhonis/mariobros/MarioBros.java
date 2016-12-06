@@ -1,6 +1,9 @@
 package com.mhonis.mariobros;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mhonis.mariobros.screens.PlayScreen;
 
@@ -23,19 +26,33 @@ public class MarioBros extends Game {
 
     public SpriteBatch batch;
 
+    //TODO do not use static AssetManager, it can cause problems, especially on android. Pass it around to the classes that need it instead.
+    public static AssetManager manager;
+
     @Override
     public void create() {
         batch = new SpriteBatch();
+        manager = new AssetManager();
+        manager.load("audio/music/mario_music.ogg", Music.class);
+        manager.load("audio/sounds/bump.wav", Sound.class);
+        manager.load("audio/sounds/coin.wav", Sound.class);
+        manager.load("audio/sounds/breakblock.wav", Sound.class);
+        manager.finishLoading(); //synchronous loading
         setScreen(new PlayScreen(this));
     }
 
     @Override
     public void render() {
         super.render();
+        if(manager.update()) { //returns a boolean that tells whether all assets are loaded
+            //this would be used for asynchronous loading
+        }
     }
 
     @Override
     public void dispose() {
+        super.dispose();
         batch.dispose();
+        manager.dispose();
     }
 }

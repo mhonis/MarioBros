@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="240" height="13" tilewidth="16" tileheight="16" nextobjectid="40">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="240" height="13" tilewidth="16" tileheight="16" nextobjectid="54">
  <tileset firstgid="1" name="tileset_gutter" tilewidth="16" tileheight="16" spacing="2" margin="1" tilecount="924" columns="33">
   <image source="tileset_gutter.png" width="594" height="504"/>
  </tileset>
@@ -10,7 +10,7 @@
  </layer>
  <layer name="Graphics Layer" width="240" height="13">
   <data encoding="base64" compression="zlib">
-   eJzt2DEKgCAUgOFqqxu4NtYNuv/BKmhMkaBM+T544CK85Uew6wAAgNptkQHaF/rSGwBPbfqFYvrI5NIv1Eu/kG+4JtycU56+r6fxuDBFLukX/m05Gl31C1XSL9Qr1e/87SpQROyft9S8uRu0ZgcGAQST
+   eJzt2DsKhTAQBVB9ne7A9pW6A/e/MBUsLIyKonHwHBhIkw9DLoEUBQAAABBVU+Y+AXBWL7+QTZmoo+QX4pJfOO43V7My3nL2fZ1U44Q6MUl+4d3aMaOd/EJI8gtxbeX3/+xR4HHTHU/98+aqpTvXvmP9vX1z9zZKv77W5ys1AE52BAI=
   </data>
  </layer>
  <objectgroup name="Ground">
@@ -19,25 +19,23 @@
   <object id="19" x="512" y="128" width="64" height="16"/>
   <object id="20" x="608" y="96" width="96" height="16"/>
   <object id="35" x="864" y="176" width="16" height="16"/>
+  <object id="41" x="2896" y="192" width="944" height="16"/>
+  <object id="42" x="2224" y="192" width="640" height="16"/>
+  <object id="43" x="1456" y="192" width="704" height="16"/>
+  <object id="45" x="1008" y="192" width="416" height="16"/>
  </objectgroup>
  <objectgroup name="Pipes">
   <object id="39" x="752" y="128" width="32" height="64"/>
  </objectgroup>
  <objectgroup name="Coins">
-  <object id="29" x="608" y="48" width="16" height="16"/>
-  <object id="30" x="624" y="48" width="16" height="16"/>
-  <object id="31" x="640" y="48" width="16" height="16"/>
-  <object id="32" x="656" y="48" width="16" height="16"/>
-  <object id="33" x="672" y="48" width="16" height="16"/>
-  <object id="34" x="688" y="48" width="16" height="16"/>
+  <object id="49" x="320" y="128" width="16" height="16"/>
+  <object id="52" x="368" y="128" width="16" height="16"/>
  </objectgroup>
  <objectgroup name="Bricks">
   <object id="22" x="288" y="128" width="16" height="16"/>
   <object id="23" x="304" y="128" width="16" height="16"/>
-  <object id="24" x="320" y="128" width="16" height="16"/>
   <object id="25" x="336" y="128" width="16" height="16"/>
   <object id="26" x="352" y="128" width="16" height="16"/>
-  <object id="27" x="368" y="128" width="16" height="16"/>
   <object id="28" x="384" y="128" width="16" height="16"/>
  </objectgroup>
 </map>

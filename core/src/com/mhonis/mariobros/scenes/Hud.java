@@ -72,7 +72,7 @@ public class Hud implements Disposable {
         }
     }
 
-    public static void addScore(int value) {
+    public static void addScore(int value) { //TODO get rid of the static modifier and pass hud object around instead
         score += value;
         scoreLabel.setText(String.format("%06d", score));
     }
