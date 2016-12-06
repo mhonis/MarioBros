@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mhonis.mariobros.MarioBros;
 import com.mhonis.mariobros.scenes.Hud;
+import com.mhonis.mariobros.sprites.Goomba;
 import com.mhonis.mariobros.sprites.Mario;
 import com.mhonis.mariobros.tools.B2WorldCreator;
 import com.mhonis.mariobros.tools.WorldContactListener;
@@ -44,6 +45,8 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer b2dr;
 
     Mario player;
+    private Goomba goomba; //TEMP
+
     private TextureAtlas textureAtlas;
 
     private Music music;
@@ -64,9 +67,9 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, -10), true); //parameters: gravity; sleep (do you want to sleep objects that are at rest)
         b2dr = new Box2DDebugRenderer();
 
-        new B2WorldCreator(world, map);
+        new B2WorldCreator(this);
 
-        player = new Mario(world, this);
+        player = new Mario(this);
         camBoundRight = (16 * map.getProperties().get("width", Integer.class) / MarioBros.PPM);
 
         world.setContactListener(new WorldContactListener());
@@ -75,10 +78,20 @@ public class PlayScreen implements Screen {
         music.setLooping(true);
         music.setVolume(0.1f);
         music.play();
+
+        goomba = new Goomba(this, .64f, .32f);
     }
 
     public TextureAtlas getTextureAtlas() {
         return textureAtlas;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public TiledMap getMap() {
+        return map;
     }
 
     @Override
@@ -108,6 +121,7 @@ public class PlayScreen implements Screen {
         world.step(1 / 60F, 6, 2);
 
         player.update(dt);
+        goomba.update(dt);
         hud.update(dt);
 
         //track Mario with camera (only within the range of the map)
@@ -137,6 +151,7 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
+        goomba.draw(game.batch);
         game.batch.end();
 
         //set the batch to render what the camera sees & HUD

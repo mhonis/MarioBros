@@ -5,6 +5,8 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.mhonis.mariobros.MarioBros;
+import com.mhonis.mariobros.sprites.Enemy;
 import com.mhonis.mariobros.sprites.InteractiveTileObject;
 
 /**
@@ -17,15 +19,34 @@ public class WorldContactListener implements ContactListener {
     public void beginContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
-        if (fixA.getUserData() != null && fixB.getUserData() != null)
-            if (fixA.getUserData().equals("head") || fixB.getUserData().equals("head")) {
-                Fixture head = fixA.getUserData().equals("head") ? fixA : fixB;
-                Fixture object = head == fixA ? fixB : fixA;
 
-                if (object.getUserData() instanceof InteractiveTileObject) {
-                    ((InteractiveTileObject) object.getUserData()).onHeadHit();
+        int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+
+        switch (cDef) {
+            case MarioBros.ENEMY_HEAD_BIT | MarioBros.MARIO_BIT:
+                if (fixA.getFilterData().categoryBits == MarioBros.ENEMY_HEAD_BIT) {
+                    ((Enemy) fixA.getUserData()).hitOnHead();
+                } else {
+                    ((Enemy) fixB.getUserData()).hitOnHead();
                 }
-            }
+                break;
+            case MarioBros.MARIO_HEAD_BIT | MarioBros.BRICK_BIT:
+            case MarioBros.MARIO_HEAD_BIT | MarioBros.COIN_BIT:
+                if (fixA.getFilterData().categoryBits == MarioBros.MARIO_HEAD_BIT)
+                    ((InteractiveTileObject) fixB.getUserData()).onHeadHit();
+                else ((InteractiveTileObject) fixA.getUserData()).onHeadHit();
+                break;
+            case MarioBros.ENEMY_BIT | MarioBros.OBJECT_BIT:
+                if (fixA.getFilterData().categoryBits == MarioBros.ENEMY_BIT) {
+                    ((Enemy) fixA.getUserData()).reverseVelocity(true, false);
+                } else {
+                    ((Enemy) fixB.getUserData()).reverseVelocity(true, false);
+                }
+                break;
+            case MarioBros.ENEMY_BIT | MarioBros.MARIO_BIT :
+                //TODO kill Mario
+                break;
+        }
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mhonis.mariobros.MarioBros;
 import com.mhonis.mariobros.scenes.Hud;
+import com.mhonis.mariobros.screens.PlayScreen;
 
 /**
  * Created by mhonis on 4.11.2016.
@@ -19,8 +20,8 @@ public class Coin extends InteractiveTileObject {
     private final Sound coinSound;
     private final Sound bumpSound;
 
-    public Coin(World world, TiledMap map, Rectangle bounds) {
-        super(world, map, bounds);
+    public Coin(PlayScreen screen, Rectangle bounds) {
+        super(screen, bounds);
         tileSet = map.getTileSets().getTileSet("tileset_gutter");
         fixture.setUserData(this);
         setCathegoryFilter(MarioBros.COIN_BIT);

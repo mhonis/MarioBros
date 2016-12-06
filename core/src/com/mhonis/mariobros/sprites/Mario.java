@@ -2,6 +2,7 @@ package com.mhonis.mariobros.sprites;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -34,26 +35,27 @@ public class Mario extends Sprite {
     private float stateTimer;
     private boolean runningRight;
 
-    public Mario(World world, PlayScreen screen) {
+    public Mario(PlayScreen screen) {
         super(screen.getTextureAtlas().findRegion("little_mario"));
-        this.world = world;
+        this.world = screen.getWorld();
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
         runningRight = true;
 
+        TextureAtlas.AtlasRegion atlasRegion = (screen.getTextureAtlas().findRegion("little_mario"));
         Array<TextureRegion> frames = new Array<TextureRegion>();
         for (int i = 1; i < 4; i++)
-            frames.add(new TextureRegion(getTexture(), 1 + i * 16, 11, 16, 16)); //needs to be offset by the fireball texture
+            frames.add(new TextureRegion(atlasRegion, i * 16, 0, 16, 16));
 
         marioRun = new Animation(0.1f, frames);
         frames.clear();
         for (int i = 4; i < 6; i++)
-            frames.add(new TextureRegion(getTexture(), 1 + i * 16, 11, 16, 16)); //needs to be offset by the fireball texture
+            frames.add(new TextureRegion(atlasRegion, i * 16, 0, 16, 16));
         marioJump = new Animation(0.1f, frames);
         frames.clear();
 
-        marioStand = new TextureRegion(getTexture(), 1, 11, 16, 16);
+        marioStand = new TextureRegion(atlasRegion, 0, 0, 16, 16);
         setBounds(0, 0, 16 / MarioBros.PPM, 16 / MarioBros.PPM);
         setRegion(marioStand);
         defineMario();
@@ -84,7 +86,12 @@ public class Mario extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(6 / MarioBros.PPM);
         fdef.filter.categoryBits = MarioBros.MARIO_BIT;
-        fdef.filter.maskBits = MarioBros.DEFAULT_BIT | MarioBros.COIN_BIT | MarioBros.BRICK_BIT;
+        fdef.filter.maskBits = MarioBros.GROUND_BIT |
+                MarioBros.COIN_BIT |
+                MarioBros.BRICK_BIT |
+                MarioBros.OBJECT_BIT |
+                MarioBros.ENEMY_BIT |
+                MarioBros.ENEMY_HEAD_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData("body");
@@ -92,12 +99,14 @@ public class Mario extends Sprite {
         EdgeShape feet = new EdgeShape();
         feet.set(new Vector2(-2 / MarioBros.PPM, -6 / MarioBros.PPM), new Vector2(2 / MarioBros.PPM, -6 / MarioBros.PPM));
         fdef.shape = feet;
+        fdef.filter.categoryBits = MarioBros.MARIO_BIT;
         b2body.createFixture(fdef).setUserData("feet");
 
         EdgeShape head = new EdgeShape();
         head.set(new Vector2(-2 / MarioBros.PPM, 6 / MarioBros.PPM), new Vector2(2 / MarioBros.PPM, 6 / MarioBros.PPM));
         fdef.shape = head;
         fdef.isSensor = true;
+        fdef.filter.categoryBits = MarioBros.MARIO_HEAD_BIT;
         b2body.createFixture(fdef).setUserData("head");
     }
 
