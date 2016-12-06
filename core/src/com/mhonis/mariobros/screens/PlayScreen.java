@@ -13,10 +13,12 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mhonis.mariobros.MarioBros;
 import com.mhonis.mariobros.scenes.Hud;
+import com.mhonis.mariobros.sprites.Enemy;
 import com.mhonis.mariobros.sprites.Goomba;
 import com.mhonis.mariobros.sprites.Mario;
 import com.mhonis.mariobros.tools.B2WorldCreator;
@@ -44,8 +46,10 @@ public class PlayScreen implements Screen {
     private World world;
     private Box2DDebugRenderer b2dr;
 
+    B2WorldCreator worldCreator;
+
     Mario player;
-    private Goomba goomba; //TEMP
+    Array<Goomba> goombas;
 
     private TextureAtlas textureAtlas;
 
@@ -67,19 +71,18 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, -10), true); //parameters: gravity; sleep (do you want to sleep objects that are at rest)
         b2dr = new Box2DDebugRenderer();
 
-        new B2WorldCreator(this);
+        worldCreator = new B2WorldCreator(this);
 
         player = new Mario(this);
         camBoundRight = (16 * map.getProperties().get("width", Integer.class) / MarioBros.PPM);
 
         world.setContactListener(new WorldContactListener());
+        goombas = worldCreator.getGoombas();
 
         music = MarioBros.manager.get("audio/music/mario_music.ogg");
         music.setLooping(true);
         music.setVolume(0.1f);
         music.play();
-
-        goomba = new Goomba(this, .64f, .32f);
     }
 
     public TextureAtlas getTextureAtlas() {
@@ -121,7 +124,9 @@ public class PlayScreen implements Screen {
         world.step(1 / 60F, 6, 2);
 
         player.update(dt);
-        goomba.update(dt);
+        for (Enemy goomba : goombas) {
+            goomba.update(dt);
+        }
         hud.update(dt);
 
         //track Mario with camera (only within the range of the map)
@@ -151,7 +156,9 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
-        goomba.draw(game.batch);
+        for (Enemy goomba : goombas) {
+            goomba.draw(game.batch);
+        }
         game.batch.end();
 
         //set the batch to render what the camera sees & HUD
